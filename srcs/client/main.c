@@ -28,6 +28,19 @@ static void send_bit(char *pid, char c)
     }
 }
 
+static void terminate(char *pid)
+{
+    int bit;
+
+    bit = 0;
+    while (bit < 8)
+    {
+        kill(ft_atoi(pid), SIGUSR2);
+        usleep(200);
+        ++bit;
+    }
+}
+
 int main(int ac, char **av)
 {
     int i;
@@ -41,7 +54,7 @@ int main(int ac, char **av)
     {
         send_bit(av[1], av[2][i]);
         ++i;
-    
     }
-
+    terminate(av[1]);
+    return (0);
 }
