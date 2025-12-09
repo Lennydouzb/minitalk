@@ -6,55 +6,56 @@
 /*   By: ldesboui <ldesboui@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 21:29:17 by ldesboui          #+#    #+#             */
-/*   Updated: 2025/12/01 21:29:17 by ldesboui         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:59:50 by ldesboui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minitalk.h"
 
-static void send_bit(char *pid, char c)
+static void	send_bit(char *pid, char c)
 {
-    int bit;
+	int	bit;
 
-    bit = 7;
-    while (bit >= 0)
-    {
-        if ((c >> bit) & 1)
-            kill(ft_atoi(pid), SIGUSR1);
-        else
-            kill(ft_atoi(pid), SIGUSR2);
-        usleep(200);
-        --bit;
-    }
+	bit = 7;
+	while (bit >= 0)
+	{
+		if ((c >> bit) & 1)
+			kill(ft_atoi(pid), SIGUSR1);
+		else
+			kill(ft_atoi(pid), SIGUSR2);
+		usleep(200);
+		--bit;
+	}
 }
 
-static void terminate(char *pid)
+static void	terminate(char *pid)
 {
-    int bit;
+	int	bit;
 
-    bit = 0;
-    while (bit < 8)
-    {
-        kill(ft_atoi(pid), SIGUSR2);
-        usleep(200);
-        ++bit;
-    }
+	bit = 0;
+	while (bit < 8)
+	{
+		kill(ft_atoi(pid), SIGUSR2);
+		usleep(200);
+		++bit;
+	}
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    int i;
-    if (ac != 3)
-    {
-        ft_printf("1st argument : server's PID\n2nd argument : Message\n");
-        return (1);
-    }
-    i = 0;
-    while (av[2][i])
-    {
-        send_bit(av[1], av[2][i]);
-        ++i;
-    }
-    terminate(av[1]);
-    return (0);
+	int	i;
+
+	if (ac != 3)
+	{
+		ft_printf("1st argument : server's PID\n2nd argument : Message\n");
+		return (1);
+	}
+	i = 0;
+	while (av[2][i])
+	{
+		send_bit(av[1], av[2][i]);
+		++i;
+	}
+	terminate(av[1]);
+	return (0);
 }
